@@ -1,9 +1,13 @@
 /*		TODO		*/
 //Import Image into program	✅️
 //Resize the image 2x1 in height ✅️
+//Convert image from RGB to BW
 //Print the image in BW
+
+//Convert image from RGB to HSV
 //Print the image in Color (using ASCII escape code)
 //Highlight the edges using a sobel filter
+
 //Fix git user ✅️
 
 
@@ -16,6 +20,8 @@
 
 
 int main(int argc, char const *argv[]){
+
+	char* saturation = ['','.','-','=','+','*','x','#','$',"&",'X','@'];
 	/*		import image in its original size		*/
 	int width;
 	int height;
