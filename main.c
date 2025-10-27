@@ -10,6 +10,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <stddef.h>
 #include "stb/stb_image.h"
 #include "stb/stb_image_resize2.h"
 
@@ -22,7 +23,7 @@ int main(int argc, char const *argv[]){
 	unsigned char* imagedata = NULL;
 	const char* filename = "icon.png";
 	
-	imagedata = stbi_load(filename, &width,&height,&channels,0);
+	imagedata = stbi_load(filename, &width,&height,&channels,3);
 
 	if(imagedata == NULL){
 		printf("ERROR\n");
@@ -30,7 +31,6 @@ int main(int argc, char const *argv[]){
 		return 0;
 	}
 	printf("Successfully imported\n");
-
 	printf("width: %d\n",width);
 	printf("Height: %d\n",height);
 	printf("Channels: %d\n",channels);
@@ -39,8 +39,9 @@ int main(int argc, char const *argv[]){
 
 	int res_width = width;
 	int res_height = height/2;
+	int res_channels = 3;
 
-	size_t new_image_size = (size_t)res_width*(size_t)res_height*channels;
+	size_t new_image_size = (size_t)res_width*(size_t)res_height*res_channels;
 	unsigned char* resized_image = (unsigned char*)malloc(new_image_size);
 
 	stbir_pixel_layout layout = STBIR_RGBA; 
@@ -59,22 +60,22 @@ int main(int argc, char const *argv[]){
 
 	printf("New width: %d\n",width);
 	printf("New Height: %d\n",height);
-	printf("Channels: %d\n",channels);
-
+	printf("Channels: %d\n",res_channels);
 
 	/*		print all pixels		*/
 
 	for (int y = 0 ; y < height;y++){
 		for (int x = 0; x < width; x++)
 		{	
-			size_t index = (y*width+x) * channels;
-			printf("[R|G|B]:%d|%d|%d ",
+			size_t index = (y*width+x) * res_channels;
+			printf("(%d|%d|%d)|",
 				imagedata[index],
 				imagedata[index+1],
 				imagedata[index+2]);
 		}
+		printf("\n");
 	}
-
+	printf("\n");
 	stbi_image_free(imagedata);
 	return 0;
 }
