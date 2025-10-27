@@ -1,8 +1,12 @@
-	//TODO
-	//resize the image 2x1 in height
-	//print the image in BW
-	//print the image in Color (using ASCII escape code)
-	//highlight the edges using a sobel filter
+/*		TODO		*/
+//Import Image into program	✅️
+//Resize the image 2x1 in height ✅️
+//Print the image in BW
+//Print the image in Color (using ASCII escape code)
+//Highlight the edges using a sobel filter
+//Fix git user ✅️
+
+
 
 #include <stdlib.h>
 #include <stdio.h>
