@@ -19,7 +19,9 @@
 #include "stb/stb_image_resize2.h"
 #include <math.h>
 
-double calc_saturation(int r, int g, int b);
+int calc_saturation(int r, int g, int b);
+int calc_Hue(int red, int green, int blue);
+int calc_value(int r, int g, int b);
 int main(int argc, char const *argv[]){
 
 	char saturation[] = " .-=+*x#$&X@";
@@ -40,8 +42,8 @@ int main(int argc, char const *argv[]){
 
 	/*		resize the image to half its height		*/
 
-	int res_width = width/4;
-	int res_height = height/4/2;
+	int res_width = width;
+	int res_height = height/2;
 	int res_channels = 3;
 
 	size_t new_image_size = (size_t)res_width*(size_t)res_height*res_channels;
@@ -78,32 +80,62 @@ int main(int argc, char const *argv[]){
 							  					(0.587 * imagedata[index + 1]) +
 							  					(0.114 * imagedata[index + 2]);
 			image_BW[index] = gray;
-			int selection = 12 - (gray / 255.0) * (sizeof(saturation) - 1);
+			int selection = (gray / 255.0) * (sizeof(saturation) - 1);
 			ASCII_Img[index] = saturation[selection];
 			printf("%c",ASCII_Img[index]);
 		}
 		printf("\n");
 	}
-	printf("Saturation: %f",calc_saturation(255,0,0));
 	// printf("\e[31m  \e[0m");
+
+
+	printf("H: %d\n",calc_Hue(50, 52, 168));
+	printf("S: %d\n",calc_saturation(50, 52, 168));
+	printf("V: %d\n",calc_value(50, 52, 168));
 	stbi_image_free(imagedata);
 	return 0;
 }
+int calc_Hue(int red, int green, int blue){
+	double r = red / 255.0;
+	double g = green / 255.0;
+	double b = blue / 255.0;
 
-int calc_value(int r, int g, int b){
-	return fmax(r,fmax(g,b));
+	double max = fmax(r,fmax(g,b));
+	double min = fmin(r,fmin(g,b));
+	double hue = 0;
+
+	if(min == max){
+		hue = 0;
+	}else if(max == r){
+		hue = (g-b)/(max-min);
+	}else if(max == g){
+		hue = 2.0 + (b-r)/(max-min);
+	}else if(max == b){
+		hue = 4.0 + (r-g)/(max-min);
+	}
+	hue *= 60;
+	if (hue < 0){
+		hue += 360;
+	}
+
+	return (int)hue;
 }
 
-double calc_saturation(int r, int g, int b){
+int calc_value(int r, int g, int b){
 	//Need to define: if > 0.3: color else: white
+	int max = fmax(r,fmax(g,b));
+	
+	return (int)((max/255.0)*100);
+}
+
+int calc_saturation(int r, int g, int b){
+	
 	int min = fmin(r,fmin(g,b));
 	int max = fmax(r,fmax(g,b));
-	printf("%d\n",min);
-	printf("%d\n",max);
 	if(max == 0){
 		return 0.0;
 	}else{
-		double sat = (double)(max-min)/(double)max;
+		int sat = ((double)(max-min)/(double)max)*100;
 		return sat;
 	}
 }		
