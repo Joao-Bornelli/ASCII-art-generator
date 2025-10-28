@@ -1,8 +1,8 @@
 /*		TODO		*/
 //Import Image into program	✅️
 //Resize the image 2x1 in height ✅️
-//Convert image from RGB to BW
-//Print the image in BW
+//Convert image from RGB to BW ✅️
+//Print the image in BW ✅️
 
 //Convert image from RGB to HSV
 //Print the image in Color (using ASCII escape code)
@@ -21,13 +21,13 @@
 
 int main(int argc, char const *argv[]){
 
-	char saturation[] = {'\0','.','-','=','+','*','x','#','$','&','X','@'};
+	char saturation[] = " .-=+*x#$&X@";
 	/*		import image in its original size		*/
 	int width;
 	int height;
 	int channels;
 	unsigned char* imagedata = NULL;
-	const char* filename = "icon.png";
+	const char* filename = "image.png";
 	
 	imagedata = stbi_load(filename, &width,&height,&channels,3);
 
@@ -36,15 +36,11 @@ int main(int argc, char const *argv[]){
 		printf("%s\n",stbi_failure_reason());
 		return 0;
 	}
-	printf("Successfully imported\n");
-	printf("width: %d\n",width);
-	printf("Height: %d\n",height);
-	printf("Channels: %d\n",channels);
 
 	/*		resize the image to half its height		*/
 
-	int res_width = width;
-	int res_height = height/2;
+	int res_width = width/4;
+	int res_height = height/4/2;
 	int res_channels = 3;
 
 	size_t new_image_size = (size_t)res_width*(size_t)res_height*res_channels;
@@ -64,26 +60,9 @@ int main(int argc, char const *argv[]){
 		free(resized_image);
 	}
 
-	printf("New width: %d\n",width);
-	printf("New Height: %d\n",height);
-	printf("Channels: %d\n",res_channels);
-
-	/*		print all pixels		*/
-
-	for (int y = 0 ; y < height;y++){
-		for (int x = 0; x < width; x++)
-		{	
-			size_t index = (y*width+x) * res_channels;
-			printf("(%d|%d|%d)|",
-				imagedata[index],
-				imagedata[index+1],
-				imagedata[index+2]);
-		}
-		printf("\n");
-	}
-
 	size_t image_BW_size = (size_t)res_width*(size_t)res_height;
 	unsigned char* image_BW = (unsigned char*)malloc(image_BW_size);
+	unsigned char* ASCII_Img = (unsigned char*)malloc(image_BW_size);
 	if(image_BW == NULL){
 		printf("Error allocating memory");
 		free(image_BW);
@@ -99,13 +78,13 @@ int main(int argc, char const *argv[]){
 							  					(0.114 * imagedata[index + 2]);
 
 			image_BW[index] = gray;
-			printf("(%d)",image_BW[index_bw]);
+			int selection = 12-(gray / 255.0) * (sizeof(saturation) - 1);
+
+			ASCII_Img[index] = saturation[selection];
+			printf("%c",ASCII_Img[index]);
 		}
 		printf("\n");
 	}
-
-
-	printf("\n");
 	stbi_image_free(imagedata);
 	return 0;
 }
