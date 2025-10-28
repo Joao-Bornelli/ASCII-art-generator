@@ -21,7 +21,7 @@
 
 int main(int argc, char const *argv[]){
 
-	char* saturation = ['','.','-','=','+','*','x','#','$',"&",'X','@'];
+	char saturation[] = {'\0','.','-','=','+','*','x','#','$','&','X','@'};
 	/*		import image in its original size		*/
 	int width;
 	int height;
@@ -50,7 +50,7 @@ int main(int argc, char const *argv[]){
 	size_t new_image_size = (size_t)res_width*(size_t)res_height*res_channels;
 	unsigned char* resized_image = (unsigned char*)malloc(new_image_size);
 
-	stbir_pixel_layout layout = STBIR_RGBA; 
+	stbir_pixel_layout layout = STBIR_RGB; 
 	stbir_resize_uint8_linear(  imagedata, width, height, 0,
 								resized_image, res_width, res_height, 0,
 								layout);
@@ -81,6 +81,30 @@ int main(int argc, char const *argv[]){
 		}
 		printf("\n");
 	}
+
+	size_t image_BW_size = (size_t)res_width*(size_t)res_height;
+	unsigned char* image_BW = (unsigned char*)malloc(image_BW_size);
+	if(image_BW == NULL){
+		printf("Error allocating memory");
+		free(image_BW);
+	}
+
+	for (int y = 0 ; y < height;y++){
+		for (int x = 0; x < width; x++)
+		{
+			size_t index = (y * width + x) * res_channels;
+			size_t index_bw = (y * width + x);
+			unsigned char gray = (unsigned char)(0.299 * imagedata[index]) 	+ 
+							  					(0.587 * imagedata[index + 1]) +
+							  					(0.114 * imagedata[index + 2]);
+
+			image_BW[index] = gray;
+			printf("(%d)",image_BW[index_bw]);
+		}
+		printf("\n");
+	}
+
+
 	printf("\n");
 	stbi_image_free(imagedata);
 	return 0;
