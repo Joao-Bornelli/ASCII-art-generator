@@ -4,7 +4,7 @@
 //Convert image from RGB to BW ✅️
 //Print the image in BW ✅️
 
-//Convert image from RGB to HSV
+//Convert image from RGB to HSV 
 //Print the image in Color (using ASCII escape code)
 //Highlight the edges using a sobel filter
 
@@ -85,11 +85,17 @@ int main(int argc, char const *argv[]){
 		printf("\n");
 	}
 	printf("Saturation: %f",calc_saturation(255,0,0));
+	// printf("\e[31m  \e[0m");
 	stbi_image_free(imagedata);
 	return 0;
 }
 
+int calc_value(int r, int g, int b){
+	return fmax(r,fmax(g,b));
+}
+
 double calc_saturation(int r, int g, int b){
+	//Need to define: if > 0.3: color else: white
 	int min = fmin(r,fmin(g,b));
 	int max = fmax(r,fmax(g,b));
 	printf("%d\n",min);
@@ -101,3 +107,4 @@ double calc_saturation(int r, int g, int b){
 		return sat;
 	}
 }		
+
