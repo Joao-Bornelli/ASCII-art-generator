@@ -17,8 +17,9 @@
 #include <stddef.h>
 #include "stb/stb_image.h"
 #include "stb/stb_image_resize2.h"
+#include <math.h>
 
-
+double calc_saturation(int r, int g, int b);
 int main(int argc, char const *argv[]){
 
 	char saturation[] = " .-=+*x#$&X@";
@@ -27,7 +28,7 @@ int main(int argc, char const *argv[]){
 	int height;
 	int channels;
 	unsigned char* imagedata = NULL;
-	const char* filename = "image.png";
+	const char* filename = "icon.png";
 	
 	imagedata = stbi_load(filename, &width,&height,&channels,3);
 
@@ -76,15 +77,27 @@ int main(int argc, char const *argv[]){
 			unsigned char gray = (unsigned char)(0.299 * imagedata[index]) 	+ 
 							  					(0.587 * imagedata[index + 1]) +
 							  					(0.114 * imagedata[index + 2]);
-
 			image_BW[index] = gray;
-			int selection = 12-(gray / 255.0) * (sizeof(saturation) - 1);
-
+			int selection = 12 - (gray / 255.0) * (sizeof(saturation) - 1);
 			ASCII_Img[index] = saturation[selection];
 			printf("%c",ASCII_Img[index]);
 		}
 		printf("\n");
 	}
+	printf("Saturation: %f",calc_saturation(255,0,0));
 	stbi_image_free(imagedata);
 	return 0;
 }
+
+double calc_saturation(int r, int g, int b){
+	int min = fmin(r,fmin(g,b));
+	int max = fmax(r,fmax(g,b));
+	printf("%d\n",min);
+	printf("%d\n",max);
+	if(max == 0){
+		return 0.0;
+	}else{
+		double sat = (double)(max-min)/(double)max;
+		return sat;
+	}
+}		
