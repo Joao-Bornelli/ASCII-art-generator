@@ -6,7 +6,7 @@
 
 // Convert image from RGB to HSV ✅️
 // Print the image in Color (using ASCII escape code) ✅️
-// Highlight the edges using a sobel filter
+// Highlight the edges using a sobel filter ✅️
 
 // Fix git user ✅️
 
@@ -30,7 +30,18 @@ int main(int argc, char const* argv[]) {
   int height;
   int channels;
   unsigned char* imagedata = NULL;
-  const char* filename = "file.jpg";
+  unsigned char* edge_magnitude = NULL;
+  const char* filename = "Elephant.jpg";
+
+  int sobel_x[3][3] =
+  { {-1, 0, 1},
+    {-2, 0, 2},
+    {-1, 0, 1} };
+
+  int sobel_y[3][3] =
+  { {-1, -2, -1},
+    {0, 0, 0},
+    {1, 2, 1} };
 
   imagedata = stbi_load(filename, &width, &height, &channels, 3);
 
@@ -41,7 +52,7 @@ int main(int argc, char const* argv[]) {
   }
 
   /*		resize the image to half its height		*/
-  int scale = 2;
+  int scale = 4;
   int res_width = width / scale;
   int res_height = height / 2 / scale;
   int res_channels = 3;
@@ -70,18 +81,40 @@ int main(int argc, char const* argv[]) {
     free(image_BW);
   }
 
-  for (int y = 0; y < height; y++) {
-    for (int x = 0; x < width; x++) {
+  for (int y = 1; y < height-1; y++) {
+    for (int x = 1; x < width-1; x++) {
       size_t index = (y * width + x) * res_channels;
       unsigned char r = (unsigned char)(imagedata[index]);
       unsigned char g = (unsigned char)(imagedata[index + 1]);
       unsigned char b = (unsigned char)(imagedata[index + 2]);
 
-      char* dot = get_color(r, g, b);
-      if (dot != NULL) {
-        printf("%s", dot);
-        free(dot);
-        dot = NULL;
+      long Gx = 0;
+      long Gy = 0;
+
+      for (int ky = -1; ky <= 1; ky++) {
+        for (int kx = -1; kx <= 1; kx++) {
+        	size_t px_index = ((y+ky)*width+(x+kx))*res_channels;
+        	unsigned char nbr_r = imagedata[px_index];
+        	unsigned char nbr_g = imagedata[px_index+1];
+        	unsigned char nbr_b = imagedata[px_index+2];
+      		int gray_pixel = (int)((float)calc_value(nbr_r,nbr_g,nbr_b) * 2.55);
+
+        	Gx += gray_pixel * sobel_x[ky+1][kx+1];
+        	Gy += gray_pixel * sobel_y[ky+1][kx+1];
+        }
+      }
+
+      long magnitude = labs(Gx)+labs(Gy);
+      int normalized = fmin(255,magnitude/4.0);
+      if(normalized < 60){
+	      char* dot = get_color(r, g, b);
+	      if (dot != NULL) {
+	        printf("%s", dot);
+	        free(dot);
+	        dot = NULL;
+	      }	
+      }else{
+      	printf("%c", ' ');
       }
     }
     printf("\n");
