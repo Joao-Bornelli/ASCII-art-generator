@@ -52,7 +52,7 @@ int main(int argc, char const* argv[]) {
   }
 
   /*		resize the image to half its height		*/
-  int scale = 4;
+  int scale = 10;
   int res_width = width / scale;
   int res_height = height / 2 / scale;
   int res_channels = 3;
