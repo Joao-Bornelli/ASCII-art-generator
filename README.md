@@ -1,4 +1,4 @@
-# 🎨 ASCII Art Generator
+# ASCII Art Generator
 
 > Transforme suas imagens em arte ASCII colorida com detecção inteligente de bordas e mapeamento HSV.
 
@@ -6,18 +6,18 @@ Uma ferramenta poderosa em C puro que converte imagens em ASCII art com cores AN
 
 ---
 
-## ✨ Funcionalidades
+## Funcionalidades
 
-- 🎨 **Saída colorida** — Cores ANSI mapeadas via HSV (Matiz, Saturação, Valor)
-- 🔍 **Detecção de bordas** — Filtro Sobel 3x3 para destacar contornos
-- 🖼️ **Redimensionamento adaptativo** — Ajusta proporção (2:1) para melhor visualização em terminal
-- 📊 **Mapeamento inteligente** — Caracteres baseados em intensidade (value) e saturação
-- ⚡ **Performance** — Implementado em C puro, sem dependências pesadas
-- 🎭 **Conversão RGB→HSV** — Análise completa de cor para renderização precisa
+- **Saída colorida** — Cores ANSI mapeadas via HSV (Matiz, Saturação, Valor)
+- **Detecção de bordas** — Filtro Sobel 3x3 para destacar contornos
+- **Redimensionamento adaptativo** — Ajusta proporção (2:1) para melhor visualização em terminal
+- **Mapeamento inteligente** — Caracteres baseados em intensidade (value) e saturação
+- **Performance** — Implementado em C puro, sem dependências pesadas
+- **Conversão RGB→HSV** — Análise completa de cor para renderização precisa
 
 ---
 
-## 📋 Requisitos
+## Requisitos
 
 - **Compilador C** — GCC, Clang ou equivalente
 - **Bibliotecas incluídas** — `stb_image.h` e `stb_image_resize2.h` (já presentes)
@@ -26,7 +26,7 @@ Uma ferramenta poderosa em C puro que converte imagens em ASCII art com cores AN
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Compilação
 ```bash
@@ -49,7 +49,7 @@ E recompile.
 
 ---
 
-## 🎛️ Como Funciona
+## Como Funciona
 
 ### Pipeline de Processamento
 
@@ -75,7 +75,7 @@ E recompile.
 
 ---
 
-## 📸 Exemplo Visual
+## Exemplo Visual
 
 ```
 Entrada: Elephant.jpg
@@ -131,10 +131,10 @@ $$&&&&&&&&&&&&&$$$$&&&&&$$$$##  #xxxxxx#x#xx****  xxx###xxxx***                 
 &&&&&&&&&&&&&&&&&&&&&&X&&&&&  &&                                        X          &&XXXXXXXXX&XXXXXXX&&&&&& &&$&&&&$&&$$  &X&&&&&&&&$$$&&&&&&&&&&&&&&&&&&&&&&
 &&&&&&XX&&X&&&X&&X&X&&X&&&&XXX&&XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX&&&X&&XXX&&&X&XXX&XX&XX&&&&&&&&&&X&&&$#&&&$$$&&&&&&$$&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 &&&&&&&&&&&&&&X&&&XX&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&X&&&&&&X    X             &&&&&&&X&&&&XXXX&XX&&X&&&&XXX&&XXXXX&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-&&XX&&&&XXX&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&    $        xxxxx &&&XXXXX&X&XXX&&XXX&XX&&&X&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&$$&&$$&
+&&XX&&&&XXX&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 ```
 
----
+--- 
 
 ## 🔧 Estrutura do Código
 
@@ -153,7 +153,6 @@ $$&&&&&&&&&&&&&$$$$&&&&&$$$$##  #xxxxxx#x#xx****  xxx###xxxx***                 
 - Diferentes mapas de caracteres
 - Redimensionamento automático da imagem
 - Detecção de borda com sobel mais precisa, com caracteres descritivos
-
 
 ---
 
