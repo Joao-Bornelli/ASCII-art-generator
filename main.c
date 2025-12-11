@@ -31,7 +31,7 @@ int main(int argc, char const* argv[]) {
   int channels;
   unsigned char* imagedata = NULL;
   unsigned char* edge_magnitude = NULL;
-  const char* filename = "Elephant.jpg";
+  const char* filename = "Flamingo.jpg";
 
   int sobel_x[3][3] =
   { {-1, 0, 1},
@@ -52,7 +52,7 @@ int main(int argc, char const* argv[]) {
   }
 
   /*		resize the image to half its height		*/
-  int scale = 10;
+  int scale = 5;
   int res_width = width / scale;
   int res_height = height / 2 / scale;
   int res_channels = 3;
@@ -106,7 +106,7 @@ int main(int argc, char const* argv[]) {
 
       long magnitude = labs(Gx)+labs(Gy);
       int normalized = fmin(255,magnitude/4.0);
-      if(normalized < 60){
+      if(normalized < 90){
 	      char* dot = get_color(r, g, b);
 	      if (dot != NULL) {
 	        printf("%s", dot);
@@ -114,7 +114,7 @@ int main(int argc, char const* argv[]) {
 	        dot = NULL;
 	      }	
       }else{
-      	printf("%c", ' ');
+      	printf(" ");
       }
     }
     printf("\n");
@@ -171,15 +171,19 @@ int calc_saturation(int r, int g, int b) {
 }
 
 char* get_color(int red, int green, int blue) {
-  char possible_chars[] = " .-=+*x#$&X@";
+  char possible_chars[] = ".,-~:;=!*#$@";
+  int num_chars = sizeof(possible_chars) - 1;
   int hue = calc_Hue(red, green, blue);
   int saturation = calc_saturation(red, green, blue);
   int value = calc_value(red, green, blue);
 
-  int selection = (value / 100.0) * (sizeof(possible_chars) - 1);
+  // int selection = (value / 100.0) * (sizeof(possible_chars) - 1);
+  int selection = (value * num_chars) / 100;
+  if (selection >= num_chars) selection = num_chars - 1;
+
   char character = possible_chars[selection];
 
-  char color_code[3];
+  char color_code[4];
 
   if (saturation > 30) {
     if (hue >= 330 || hue < 30) {
@@ -207,11 +211,11 @@ char* get_color(int red, int green, int blue) {
   } else {
     if (value < 33) {
       // black
-      strcpy(color_code, "30");
+      strcpy(color_code, "90");
 
     } else if (value >= 33 && value < 66) {
       // gray
-      strcpy(color_code, "90");
+      strcpy(color_code, "37");
 
     } else if (value >= 66) {
       // white
@@ -219,10 +223,10 @@ char* get_color(int red, int green, int blue) {
     }
   }
 
-  char* ascii_escape = malloc(sizeof(char) * 16);
+  char* ascii_escape = malloc(sizeof(char) * 20);
   if (ascii_escape == NULL) return NULL;
 
-  snprintf(ascii_escape, 16, "\x1B[%sm%c\x1B[0m", color_code, character);
+  snprintf(ascii_escape, 20, "\x1B[%sm%c\x1B[0m", color_code, character);
 
   return ascii_escape;
 }
